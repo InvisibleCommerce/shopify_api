@@ -1,9 +1,10 @@
 # Changelog
 
 ## Unreleased
-- [#933](https://github.com/Shopify/shopify_api/pull/933) Fix syntax of GraphQL query in `Webhooks.get_webhook_id` method by removing extra curly brace
 
+- [#933](https://github.com/Shopify/shopify_api/pull/933) Fix syntax of GraphQL query in `Webhooks.get_webhook_id` method by removing extra curly brace
 - [#941](https://github.com/Shopify/shopify_api/pull/941) Fix `to_hash` to return readonly attributes, unless being used for serialize the object for saving - fix issue [#930](https://github.com/Shopify/shopify_api/issues/930)
+- [#951](https://github.com/Shopify/shopify_api/pull/941) Adds utility methods to find current shop, current recurring application charge - fix for issue [#923](https://github.com/Shopify/shopify_api/issues/923)
 
 ## Version 10.0.3
 
