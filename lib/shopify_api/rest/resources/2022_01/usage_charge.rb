@@ -38,7 +38,7 @@ module ShopifyAPI
     attr_reader :description
     sig { returns(T.nilable(Integer)) }
     attr_reader :id
-    sig { returns(T.any(T.nilable(Integer), T.nilable(String))) }
+    sig { returns(T.nilable(Integer)) }
     attr_reader :price
     sig { returns(T.nilable(Integer)) }
     attr_reader :recurring_application_charge_id
