@@ -612,10 +612,6 @@ class Fulfillment202107Test < Test::Unit::TestCase
 
     assert_requested(:post, "https://test-shop.myshopify.io/admin/api/2021-07/fulfillments/1069019903/cancel.json")
   end
-
-  sig do
-    void
-  end
   def test_7()
     stub_request(:post, "https://test-shop.myshopify.io/admin/api/2021-07/orders/450789469/fulfillments.json")
       .with(
