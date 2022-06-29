@@ -3,15 +3,6 @@
 Note: For changes to the API, see https://shopify.dev/changelog?filter=api
 
 ## Unreleased
-- [#957](https://github.com/Shopify/shopify_api/pull/957) Allow GiftCard to have String `balance` and `initial_value` (because API response is String)
-
-- [#956](https://github.com/Shopify/shopify_api/pull/956) Add path to create Fulfillment from ShopifyAPI::Fulfillment
-
-
-- [#979](https://github.com/Shopify/shopify_api/pull/979) Update `ShopifyAPI::Context.setup` to take `old_api_secret_key` to support API credentials rotation
-
-## Version 10.1.0
-
 
 - [#979](https://github.com/Shopify/shopify_api/pull/979) Update `ShopifyAPI::Context.setup` to take `old_api_secret_key` to support API credentials rotation
 
