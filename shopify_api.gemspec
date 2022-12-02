@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.6"
 
+  s.add_runtime_dependency("activesupport")
   s.add_runtime_dependency("concurrent-ruby")
   s.add_runtime_dependency("hash_diff")
   s.add_runtime_dependency("httparty")
@@ -40,13 +41,14 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("openssl")
   s.add_runtime_dependency("securerandom")
   s.add_runtime_dependency("sorbet-runtime")
-  s.add_runtime_dependency("zeitwerk", "~> 2.5")
+  s.add_runtime_dependency("zeitwerk", "~> 2.5", "< 2.6.5") # https://github.com/Shopify/shopify-api-ruby/issues/1058
 
-  s.add_development_dependency("activesupport")
+  s.add_development_dependency("pry-byebug")
   s.add_development_dependency("rake")
   s.add_development_dependency("rubocop")
   s.add_development_dependency("rubocop-shopify")
   s.add_development_dependency("rubocop-sorbet")
+  s.add_development_dependency("ruby-lsp")
   s.add_development_dependency("sorbet")
   s.add_development_dependency("tapioca")
 end

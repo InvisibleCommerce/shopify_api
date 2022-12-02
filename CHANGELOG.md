@@ -3,11 +3,25 @@
 Note: For changes to the API, see https://shopify.dev/changelog?filter=api
 
 ## Unreleased
+- [#1040](https://github.com/Shopify/shopify-api-ruby/pull/1040) `ShopifyAPI::Clients::HttpResponse` as argument for `ShopifyAPI::Errors::HttpResponseError`
+- [#1055](https://github.com/Shopify/shopify-api-ruby/pull/1055) Makes session_storage optional. Configuring the API with session_storage is now deprecated.  Session persistence is handled by the [shopify_app gem](https://github.com/Shopify/shopify_app) if using Rails.
+- [#1063](https://github.com/Shopify/shopify-api-ruby/pull/1063) Fix ActiveSupport inflector dependency
+- [#1069](https://github.com/Shopify/shopify-api-ruby/pull/1069) Adds a custom Logger to help write uniform logs across the api and the [shopify_app gem](https://github.com/Shopify/shopify_app)
+
+## Version 12.2.1
+- [#1045](https://github.com/Shopify/shopify-api-ruby/pull/1045) Fixes bug with host/host_name requirement.
+
+## Version 12.2.0
+
+- [#1023](https://github.com/Shopify/shopify-api-ruby/pull/1023) Allow custom scopes during the OAuth process
+
+## Version 12.1.0
+
+- [#1017](https://github.com/Shopify/shopify-api-ruby/pull/1017) Add support for `http` with localhost development without using a TLS tunnel
 
 ## Version 12.0.0
 
 - [#1027](https://github.com/Shopify/shopify-api-ruby/pull/1027) ⚠️ [Breaking] Remove support for deprecated API version `2021-10` and added support for version `2022-10`
-
 - [#1008](https://github.com/Shopify/shopify-api-ruby/pull/1008) Increase session token JWT validation leeway from 5s to 10s
 
 ## Version 11.1.0

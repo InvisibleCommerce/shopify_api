@@ -6,7 +6,7 @@
 
 This library provides support for Ruby [Shopify apps](https://apps.shopify.com/) to access the [Shopify Admin API](https://shopify.dev/api/admin), by making it easier to perform the following actions:
 
-- Creating [online](https://shopify.dev/concepts/about-apis/authentication#online-access) or [offline](https://shopify.dev/concepts/about-apis/authentication#offline-access) access tokens for the Admin API via OAuth
+- Creating [online](https://shopify.dev/apps/auth/oauth/access-modes#online-access) or [offline](https://shopify.dev/apps/auth/oauth/access-modes#offline-access) access tokens for the Admin API via OAuth
 - Making requests to the [REST API](https://shopify.dev/api/admin-rest)
 - Making requests to the [GraphQL API](https://shopify.dev/api/admin-graphql)
 - Registering/processing webhooks
@@ -23,10 +23,8 @@ To follow these usage guides, you will need to:
 
 - have a working knowledge of ruby and a web framework such as Rails or Sinatra
 - have a Shopify Partner account and development store
-- _OR_ have a test store where you can create a private app
 - have an app already set up in your test store or partner account
-- use [ngrok](https://ngrok.com/download) to create a secure tunnel to your app running on your localhost
-- add the `ngrok` URL and the appropriate redirect for your OAuth callback route to your app settings
+- add the URL and the appropriate redirect for your OAuth callback route to your app settings
 
 ## Installation
 
@@ -52,12 +50,12 @@ Start by initializing the `ShopifyAPI::Context` with the parameters of your app 
 ShopifyAPI::Context.setup(
   api_key: "<api-key>",
   api_secret_key: "<api-secret-key>",
-  host_name: "<application-host-name>",
+  host: "<https://application-host-name.com>",
   scope: "read_orders,read_products,etc",
   session_storage: ShopifyAPI::Auth::FileSessionStorage.new, # See more details below
   is_embedded: true, # Set to true if you are building an embedded app
-  is_private: false, # Set to true if you are building a private app
   api_version: "2022-01" # The version of the API you would like to use
+  is_private: false, # Set to true if you have an existing private app
 )
 ```
 
@@ -69,7 +67,7 @@ Session information would is typically stored in cookies on the browser. However
 
 ### Performing OAuth
 
-Next, unless you are making a private app, you need to go through OAuth as described [here](https://shopify.dev/apps/auth/oauth) to create sessions for shops using your app.
+You need to go through OAuth as described [here](https://shopify.dev/apps/auth/oauth) to create sessions for shops using your app.
 The Shopify API gem tries to make this easy by providing functions to begin and complete the OAuth process. See the [Oauth doc](docs/usage/oauth.md) for instructions on how to use these.
 
 ### Register Webhooks and a Webhook Handler
@@ -84,7 +82,7 @@ Once your app can perform OAuth, it can now make authenticated Shopify API calls
 
 ### Breaking change notice for version 10.0.0
 
-We've rewritten this library for v10, so that it provides all essential features for a Shopify app without requiring any other packages.
+We've rewritten this library for v10, so that it provides all essential features for a Shopify app without depending on the [Active Resource](https://github.com/rails/activeresource) or [graphql-client](https://github.com/github/graphql-client) libraries.
 
 Here are the main features it provides:
 
@@ -108,12 +106,12 @@ With this, a lot changed in how apps access the library. Here are the updates yo
 
     Please see below a (non-exhaustive) list of common replacements to guide you in your updates, using the `Order` resource as an example.
 
-    | Before | After |
-    | --- | --- |
-    | `Order.find(:all, params: {param1: value1})` | `Order.all(param1: value1, session:)` |
-    | `Order.find(<id>)` | `Order.find(id: <id>, session:)` |
-    | `order = Order.new(<id>)`<br/>`order.post(:close)` | `order = Order.new(session:)`<br/>`order.close()` |
-    | `order = Order.new(<id>)`<br/>`order.delete` | `Order.delete(id: <id>, session:)` |
+    | Before                                             | After |
+    | ---                                                | --- |
+    | `Order.find(:all, params: {param1: value1})`       | `Order.all(param1: value1)` |
+    | `Order.find(<id>)`                                 | `Order.find(id: <id>)` |
+    | `order = Order.new(<id>)`<br/>`order.post(:close)` | `order = Order.new`<br/>`order.close` |
+    | `order = Order.new(<id>)`<br/>`order.delete`       | `Order.delete(id: <id>)` |
 
 ## Breaking changes for older versions
 

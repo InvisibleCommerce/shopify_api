@@ -16,9 +16,18 @@ module ShopifyAPI
             shop: String,
             redirect_path: String,
             is_online: T.nilable(T::Boolean),
+            scope_override: T.nilable(T.any(ShopifyAPI::Auth::AuthScopes, T::Array[String], String)),
           ).returns(T::Hash[Symbol, T.any(String, SessionCookie)])
         end
-        def begin_auth(shop:, redirect_path:, is_online: true)
+        def begin_auth(shop:, redirect_path:, is_online: true, scope_override: nil)
+          scope = if scope_override.nil?
+            ShopifyAPI::Context.scope
+          elsif scope_override.is_a?(ShopifyAPI::Auth::AuthScopes)
+            scope_override
+          else
+            ShopifyAPI::Auth::AuthScopes.new(scope_override)
+          end
+
           unless Context.setup?
             raise Errors::ContextNotSetupError, "ShopifyAPI::Context not setup, please call ShopifyAPI::Context.setup"
           end
@@ -30,8 +39,8 @@ module ShopifyAPI
 
           query = {
             client_id: ShopifyAPI::Context.api_key,
-            scope: ShopifyAPI::Context.scope.to_s,
-            redirect_uri: "https://#{ShopifyAPI::Context.host_name}#{redirect_path}",
+            scope: scope.to_s,
+            redirect_uri: "#{ShopifyAPI::Context.host}#{redirect_path}",
             state: state,
             "grant_options[]": is_online ? "per-user" : "",
           }
@@ -84,10 +93,7 @@ module ShopifyAPI
             )
           end
 
-          unless Context.session_storage.store_session(session)
-            raise Errors::SessionStorageError,
-              "Session could not be saved. Please check your session storage implementation."
-          end
+          Context.session_storage&.store_session(session)
 
           { session: session, cookie: cookie }
         end
