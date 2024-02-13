@@ -7,14 +7,16 @@ module TestHelpers
 
     @has_one = T.let({
       has_one_attribute: FakeResource,
-    }, T::Hash[Symbol, Class])
+    }, T::Hash[Symbol, T::Class[T.anything]])
 
     @has_many = T.let({
       has_many_attribute: FakeResource,
-    }, T::Hash[Symbol, Class])
+    }, T::Hash[Symbol, T::Class[T.anything]])
 
     @prev_page_info = T.let(Concurrent::ThreadLocalVar.new { nil }, Concurrent::ThreadLocalVar)
     @next_page_info = T.let(Concurrent::ThreadLocalVar.new { nil }, Concurrent::ThreadLocalVar)
+    @api_call_limit = T.let(Concurrent::ThreadLocalVar.new { nil }, Concurrent::ThreadLocalVar)
+    @retry_request_after = T.let(Concurrent::ThreadLocalVar.new { nil }, Concurrent::ThreadLocalVar)
 
     @read_only_attributes = T.let([:unsaveable_attribute], T::Array[Symbol])
 

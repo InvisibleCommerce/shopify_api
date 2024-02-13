@@ -11,8 +11,8 @@ module ShopifyAPI
       extend T::Helpers
       abstract!
 
-      @has_one = T.let({}, T::Hash[Symbol, Class])
-      @has_many = T.let({}, T::Hash[Symbol, Class])
+      @has_one = T.let({}, T::Hash[Symbol, T::Class[T.anything]])
+      @has_many = T.let({}, T::Hash[Symbol, T::Class[T.anything]])
       @paths = T.let([], T::Array[T::Hash[Symbol, T.any(T::Array[Symbol], String, Symbol)]])
       @custom_prefix = T.let(nil, T.nilable(String))
       @read_only_attributes = T.let([], T.nilable(T::Array[Symbol]))
@@ -55,10 +55,10 @@ module ShopifyAPI
         sig { returns(T.nilable(String)) }
         attr_reader :custom_prefix
 
-        sig { returns(T::Hash[Symbol, Class]) }
+        sig { returns(T::Hash[Symbol, T::Class[T.anything]]) }
         attr_reader :has_many
 
-        sig { returns(T::Hash[Symbol, Class]) }
+        sig { returns(T::Hash[Symbol, T::Class[T.anything]]) }
         attr_reader :has_one
 
         sig do
@@ -78,6 +78,9 @@ module ShopifyAPI
 
           instance_variable_get(:"@prev_page_info").value = response.prev_page_info
           instance_variable_get(:"@next_page_info").value = response.next_page_info
+
+          instance_variable_get(:"@retry_request_after").value = response.retry_request_after
+          instance_variable_get(:"@api_call_limit").value = response.api_call_limit
 
           create_instances_from_response(response: response, session: T.must(session))
         end
@@ -120,6 +123,16 @@ module ShopifyAPI
         sig { returns(T::Boolean) }
         def next_page?
           !instance_variable_get(:"@next_page_info").value.nil?
+        end
+
+        sig { returns T.nilable(Float) }
+        def retry_request_after
+          instance_variable_get(:"@retry_request_after").value
+        end
+
+        sig { returns T.nilable(T::Hash[String, Integer]) }
+        def api_call_limit
+          instance_variable_get(:"@api_call_limit").value
         end
 
         sig { params(attribute: Symbol).returns(T::Boolean) }
@@ -427,7 +440,7 @@ module ShopifyAPI
       sig do
         params(
           element: T.nilable(T.any(T::Hash[String, T.untyped], ShopifyAPI::Rest::Base)),
-          attribute_class: Class,
+          attribute_class: T::Class[T.anything],
           saving: T::Boolean,
         ).returns(T.nilable(T::Hash[String, T.untyped]))
       end
